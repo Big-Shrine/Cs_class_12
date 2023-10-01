@@ -1,6 +1,8 @@
 import mysql.connector as mys
 cobj=mys.connect(host='localhost',user='root',passwd='Azsxdcfv1*',database='Library',auth_plugin='caching_sha2_password')
 curob=cobj.cursor()
+
+#For adding books
 def addBook(x):
   for i in range (x):
     bkid=input('Enter the book id:')
@@ -15,9 +17,23 @@ def addBook(x):
     st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
     curob.execute(st)
     cobj.commit() 
+
+#for issuing books
 def issueBook(y):
   for i in range(y):
     a=input('Enter the customer whose book has to be issued:')
     b=eval(input('Enter the book name/id you want to add'))
+    curob.execute("select BOOK_ID, NAME from books")
+    g=input('Enter the date in the form of yyyy-mm-dd.')
+    d=curob.fetchall()
+    c=''
+    f=''
     if type(1)==type(b):
+        c="Insert into issues values({},'{}','{}')".format(b,a,g)
+    elif type('')==type(b):
+        f=d[0][0]
+        c="Insert into issues values({},'{}','{}')".format(f,a,g)
+    curob.execute(c)
+    cobj.commit()
+
       
