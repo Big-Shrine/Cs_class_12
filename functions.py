@@ -15,5 +15,9 @@ def addBook(x):
     st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
     curob.execute(st)
     cobj.commit() 
+def issueBook(y):
+  for i in range(y):
+    a=input('Enter the customer whose book has to be issued:')
+    b=eval(input('Enter the book name/id you want to add'))
+    if type(1)==type(b):
       
-    
