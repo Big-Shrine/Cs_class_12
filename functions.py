@@ -36,4 +36,25 @@ def issueBook(y):
     curob.execute(c)
     cobj.commit()
 
-      
+def view_books(z):
+  for i in range(z)
+    try:
+        curob.execute("SELECT * FROM books")
+        books = curob.fetchall()
+        if books:
+            print("List of Books:")
+            for book in books:
+                print(f"Book ID: {book[0]}")
+                print(f"Category: {book[1]}")
+                print(f"Name: {book[2]}")
+                print(f"Author: {book[3]}")
+                print(f"Copies: {book[4]}")
+                print(f"Status: {book[5]}")
+                print("--------------------")
+        else:
+            print("No books found in the database.")
+        cobj.close()
+
+    except mys.Error as e:
+        print(f"An error occurred: {str(e)}")
+
