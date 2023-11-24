@@ -67,20 +67,30 @@ def issueBooks(customer, bookid, datetime_str):
     return message
 
 #For adding books
-def addBook(x):
-  for i in range (x):
-    bkid=input('Enter the book id:')
-    gre=input('Enter the genre of the book:')
-    bkname=input('Enter the name of the book:')
-    auth=input('Enter the author of the book:')
-    copies=int(input('Enter the number of copies of the book:'))
-    if f!=0:
-      status=1
-    else:
-      status=0
-    st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
-    executor(st) 
-
+@anvil.server.callable
+#handle for integrity error
+def addBook(bkid, gre, bkname, auth, copies):
+  try:
+      if isinstance(bkid, str) and len(bkid) >= 2 and bkid[:2].isalpha() and bkid[2:].isdigit():
+          formatted_bkid = bkid[:2].upper() + bkid[2:].zfill(3)
+      else:
+          raise ValueError("Invalid format for bkid. It should be two letters followed by numbers.")
+        
+      if isinstance(copies, int) and copies!=0:
+          status=1
+      elif isinstance(copies, int) and copies==0:
+          status=0
+      else:
+          raise ValueError("Copies has to be a number")
+        
+      st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
+      executor(st)
+      message = "Book added successfully"
+      return message
+      
+  except ValueError as e:
+      message = e
+      return message
 
 def view_books():
   try:
