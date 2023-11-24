@@ -68,29 +68,37 @@ def issueBooks(customer, bookid, datetime_str):
 
 #For adding books
 @anvil.server.callable
-#handle for integrity error
 def addBook(bkid, gre, bkname, auth, copies):
-  try:
-      if isinstance(bkid, str) and len(bkid) >= 2 and bkid[:2].isalpha() and bkid[2:].isdigit():
-          formatted_bkid = bkid[:2].upper() + bkid[2:].zfill(3)
-      else:
-          raise ValueError("Invalid format for bkid. It should be two letters followed by numbers.")
+    try:
+        c=0
+        curob.execute('select BOOK_ID from books')
+        d=curob.fetchall()
+        for i in d:
+            check=i[0]
+            if bkid in check:
+                raise ValueError('Book ID already in use')
         
-      if isinstance(copies, int) and copies!=0:
-          status=1
-      elif isinstance(copies, int) and copies==0:
-          status=0
-      else:
-          raise ValueError("Copies has to be a number")
+        else:
+            if not (isinstance(bkid, str) and len(bkid)== 5 and bkid[:2].isalpha() and bkid[2:].isdigit() and bkid[:2].isupper()):
+                raise ValueError("Invalid format for Book ID. It should be two capital letters followed by 3 numbers.")
         
-      st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
-      executor(st)
-      message = "Book added successfully"
-      return message
+            if type(copies)==type(c) and copies!=0:
+                status=1
+            elif type(copies)==type(c) and copies==0:
+                status=0
+            else:
+                raise ValueError("Copies field has to be a number")
+        
+        
+        st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
+        executor(st)
+        message = "Book added successfully"
+        return message
       
-  except ValueError as e:
-      message = e
-      return message
+    except ValueError as e:
+        message = str(e)
+        return message
+
 
 def view_books():
   try:
