@@ -99,23 +99,15 @@ def addBook(bkid, gre, bkname, auth, copies):
         message = str(e)
         return message
 
-
+#for viewing books
+@anvil.server.callable 
 def view_books():
-  try:
-    curob.execute("SELECT BOOK_ID, CATEGORY, NAME, AUTHOR, COPIES, IF(STATUS=1,'AVAILABLE','NOT AVAILABLE') FROM books")
-    books = curob.fetchall()
-    if books:
-        print("List of Books:")
-        for book in books:
-            print(f"Book ID: {book[0]}")
-            print(f"Category: {book[1]}")
-            print(f"Name: {book[2]}")
-            print(f"Author: {book[3]}")
-            print(f"Copies: {book[4]}")
-            print(f"Status: {book[5]}")
-            print("--------------------")
-    else:
-        print("No books found in the database.")
-  except mys.Error as e:
-    print(f"An error occurred: {str(e)}")
-
+  curob2=cobj.cursor(dictionary=True)
+  curob2.execute("SELECT BOOK_ID, CATEGORY, NAME, AUTHOR, COPIES, IF(STATUS=1,'AVAILABLE','NOT AVAILABLE') as STATUS FROM books")
+  books = curob2.fetchall()
+  
+  if books:
+      return books
+  else:
+      message= "No books in the system."
+      return message
