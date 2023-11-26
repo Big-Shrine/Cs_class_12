@@ -1,0 +1,6 @@
+Add books function has some problems when just entering one item.
+Change all the data in the DB
+Book id can just be incrementing numbers
+Make the view books better(show when the books can be available)
+Make the username and password table
+Make all the other functions.
