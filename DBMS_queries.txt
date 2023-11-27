@@ -1,5 +1,5 @@
 CREATE TABLE BOOKS
-(BOOK_ID CHAR(5) PRIMARY KEY,
+(BOOK_ID INT AUTO_INCREMENT PRIMARY KEY,
 CATEGORY VARCHAR(50),
 NAME VARCHAR(50),
 AUTHOR VARCHAR(50),
@@ -7,14 +7,46 @@ COPIES INT,
 STATUS BOOL);
 
 CREATE TABLE CUSTOMER_DETAILS
-(CUSTOMER_ID CHAR(5) PRIMARY KEY,
+(CUSTOMER_ID INT AUTO_INCREMENT PRIMARY KEY,
 CUSTOMER_NAME VARCHAR(50),
 BOOKS_ISSUED TINYINT(1) DEFAULT 0);
 
 CREATE TABLE BOOK_ISSUES
 (SNo INT PRIMARY KEY AUTO_INCREMENT,
-BOOK_ID CHAR(5),
-CUSTOMER_ID CHAR(5),
+BOOK_ID INT,
+CUSTOMER_ID INT,
 DATE_OF_ISSUE DATETIME DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (BOOK_ID) REFERENCES BOOKS (BOOK_ID),
 FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMER_DETAILS (CUSTOMER_ID));
+
+DESC BOOKS;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| BOOK_ID  | int         | NO   | PRI | NULL    | auto_increment |
+| CATEGORY | varchar(50) | YES  |     | NULL    |                |
+| NAME     | varchar(50) | YES  |     | NULL    |                |
+| AUTHOR   | varchar(50) | YES  |     | NULL    |                |
+| COPIES   | int         | YES  |     | NULL    |                |
+| STATUS   | tinyint(1)  | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+DESC BOOK_ISSUES;
++---------------+----------+------+-----+-------------------+-------------------+
+| Field         | Type     | Null | Key | Default           | Extra             |
++---------------+----------+------+-----+-------------------+-------------------+
+| SNo           | int      | NO   | PRI | NULL              | auto_increment    |
+| BOOK_ID       | int      | YES  | MUL | NULL              |                   |
+| CUSTOMER_ID   | int      | YES  | MUL | NULL              |                   |
+| DATE_OF_ISSUE | datetime | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++---------------+----------+------+-----+-------------------+-------------------+
+4 rows in set (0.01 sec)
+DESC CUSTOMER_DETAILS;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| CUSTOMER_ID   | int         | NO   | PRI | NULL    | auto_increment |
+| CUSTOMER_NAME | varchar(50) | YES  |     | NULL    |                |
+| BOOKS_ISSUED  | tinyint(1)  | YES  |     | 0       |                |
++---------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
