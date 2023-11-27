@@ -1,5 +1,5 @@
 Add books function has some problems when just entering one item.
-
+Add a book plan in customer table
 Search in data grid
 Make the view books better(show when the books can be available)
 Make the username and password table
