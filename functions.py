@@ -68,29 +68,18 @@ def issueBooks(customer, bookid, datetime_str):
 
 #For adding books
 @anvil.server.callable
-def addBook(bkid, gre, bkname, auth, copies):
-    try:
-        c=0
-        curob.execute('select BOOK_ID from books')
-        d=curob.fetchall()
-        for i in d:
-            check=i[0]
-            if bkid in check:
-                raise ValueError('Book ID already in use')
-        
+def addBook(gre, bkname, auth, copies):
+    try:        
+        if copies.isdigit() and int(copies)!=0:
+            status=1
+        elif copies.isdigit() and int(copies)==0:
+            status=0
         else:
-            if not (isinstance(bkid, str) and len(bkid)== 5 and bkid[:2].isalpha() and bkid[2:].isdigit() and bkid[:2].isupper()):
-                raise ValueError("Invalid format for Book ID. It should be two capital letters followed by 3 numbers.")
-        
-            if type(copies)==type(c) and copies!=0:
-                status=1
-            elif type(copies)==type(c) and copies==0:
-                status=0
-            else:
-                raise ValueError("Copies field has to be a number")
+            raise ValueError("Copies field has to be a number")
         
         
-        st="Insert into books values('{}','{}','{}','{}',{},{})".format(bkid,gre,bkname,auth,copies,status)
+        intcopy=int(copies)
+        st="Insert into books (CATEGORY, NAME, AUTHOR, COPIES, STATUS) values('{}','{}','{}',{},{})".format(gre,bkname,auth,intcopy,status)
         executor(st)
         message = "Book added successfully"
         return message
@@ -98,6 +87,7 @@ def addBook(bkid, gre, bkname, auth, copies):
     except ValueError as e:
         message = str(e)
         return message
+
 
 #for viewing books
 @anvil.server.callable 
